@@ -1,6 +1,5 @@
 'use strict';
 
-const DEMO_ID = 'demo-italienisch';
 const DB_NAME = 'beat-challenge-v1:' + new URL('.', location.href).pathname;
 const MINUTES = [0, 2, 3, 5, 10, 15];
 const STATUS = {
@@ -385,7 +384,7 @@ const storageError = document.querySelector('#storage-error');
 const themeButton = document.querySelector('#theme');
 const finishDialog = document.querySelector('#finish-dialog');
 const ui = {
-  view: 'home', setId: DEMO_ID, sessionId: null, mode: 'sequence',
+  view: 'home', setId: null, sessionId: null, mode: 'sequence',
   minutes: 0, pending: false, notice: '',
 };
 let db;
@@ -452,11 +451,11 @@ function homeView() {
           ${button('Neue Session starten', 'start', { primary: true, value: selected.id })}
         `}` : '<p>Importiere eine CSV-Datei, um anzufangen.</p>'}
     </section>
-    <details class="panel">
+    <details class="panel"${selected ? '' : ' open'}>
       <summary>CSV importieren</summary>
       <p class="small muted">UTF-8 mit den Spalten id, title, description, context. Der Dateiname wird zum Namen des Beat-Sets.</p>
       <input class="file-input" type="file" id="csv-file" accept=".csv,text/csv" aria-label="Beat-Set als CSV importieren">
-      <a class="button" href="./example-beats.csv" download>Beispiel-CSV herunterladen</a>
+      <a class="button" href="data:text/csv;charset=utf-8,id%2Ctitle%2Cdescription%2Ccontext%0D%0A" download="beat-vorlage.csv">Leere CSV-Vorlage herunterladen</a>
     </details>
     ${finished.length ? `<section class="panel">
       <h2>Abgeschlossene Sessions</h2>
@@ -777,18 +776,6 @@ async function boot() {
   try {
     db = await openDatabase();
     state = await transaction(db);
-    if (!state.sets.some(set => set.id === DEMO_ID)) {
-      try {
-        const response = await fetch('./example-beats.csv');
-        if (!response.ok) throw new Error('Beispiel-CSV nicht erreichbar.');
-        const demo = { id: DEMO_ID, name: 'Italienisch lernen (Demo)', beats: parseCsv(await response.text()) };
-        state = await transaction(db, data => {
-          if (!data.sets.some(set => set.id === DEMO_ID)) data.sets.unshift(demo);
-        });
-      } catch {
-        ui.notice = 'Das Demo-Set konnte nicht geladen werden. Eigene CSV-Dateien kannst du importieren.';
-      }
-    }
     if ('BroadcastChannel' in window) {
       channel = new BroadcastChannel(DB_NAME);
       channel.onmessage = async () => {

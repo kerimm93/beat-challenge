@@ -13,6 +13,12 @@ Service Worker und PWA-Installation brauchen HTTPS oder localhost. Das direkte �
 
 Bei einem Update den Cache-Namen in `sw.js` hochzählen. Eine neue Version des Service Workers aktiviert sich, sobald keine geöffneten App-Fenster mehr von der alten Version kontrolliert werden.
 
+## CSV importieren
+
+Beim ersten Start öffnet sich der Bereich „CSV importieren“. Die leere CSV-Vorlage enthält die passende Kopfzeile. Jede importierte Datei wird als eigenes Beat-Set gespeichert.
+
+Die CSV muss als UTF-8 mit Kommas und den vier Spalten `id,title,description,context` vorliegen. Die Spalten dürfen anders angeordnet sein. ID, Titel und Beschreibung müssen ausgefüllt sein. Der Kontext darf leer bleiben. IDs sind innerhalb eines Sets eindeutig. Felder mit Kommas, Zeilenumbrüchen oder Anführungszeichen in doppelte Anführungszeichen setzen. Innerhalb eines solchen Felds doppelte Anführungszeichen als `""` schreiben. Maximale Dateigröße 2 MB.
+
 ## Sitzung
 
 - Vor dem Start sind Beat-Liste, Reihenfolge und optionaler Timer wählbar. Der Zufallsmodus mischt das Set einmal und zieht aus dieser Reihenfolge. Du kannst Beats gezielt aus der Übersicht erneut öffnen.

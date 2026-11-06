@@ -2,9 +2,9 @@
 
 const scope = new URL(self.registration.scope);
 const prefix = `beat-challenge:${scope.pathname}:`;
-const cacheName = prefix + 'v1';
+const cacheName = prefix + 'v2';
 const assets = [
-  'index.html', 'style.css', 'app.js', 'manifest.json', 'example-beats.csv',
+  'index.html', 'style.css', 'app.js', 'manifest.json',
   'icons/icon-192.png', 'icons/icon-512.png', 'icons/maskable-512.png',
 ].map(path => new URL(path, scope).href);
 const shell = assets[0];
